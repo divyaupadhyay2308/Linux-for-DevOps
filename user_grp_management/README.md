@@ -61,10 +61,10 @@ Shows the currently logged-in user.
 * Groups help simplify permission management for files, directories, and services.
 
 * Group information is stored in:
+```
+/etc/group
+```
 
-    ```
-    /etc/group
-    ```
 Example:
 ```
 docker:x:999:devops
@@ -118,43 +118,173 @@ Every **file, process, and service** in Linux runs under a user and group contex
 
 ---
 
-## Understanding Users and Groups:
+## Understanding Users and Groups
 
-Cover:
+This section explains the different **types of users and groups in Linux**.
 
-    - Root user
+---
 
-    - Normal user
+### Types of Users
 
-    - System user
+- **root** → Superuser with full permissions on the system  
+- **normal user** → Regular user who can log in and perform daily tasks  
+- **system user** → Accounts created by the system for services like `nginx`, `mysql`, `sshd`  
+- **service account** → Dedicated account used by an application or process to run securely  
 
-    - Service account
+---
 
-    - Primary group
+### Types of Groups
 
-    - Secondary group
+- **primary group** → The main group assigned to a user when the account is created  
+- **secondary group** → Additional groups assigned to a user to grant extra permissions  
 
-Explain simply:
+---
 
-### Types of users
+### Useful Commands
 
-    - **root** → superuser with full permissions
-
-    - **normal user** → regular login user
-
-    - **system user** → used by services like nginx, mysql
-
-    - **service account** → dedicated account for application/process
-
-### Types of groups
-
-    - **primary group** → main group of user
-
-    - **secondary group** → additional groups for extra permissions
-
-Commands:
 ```bash
 id
 whoami
 groups
 ```
+
+---
+
+### Important Files
+
+Explain each one:
+
+- **/etc/passwd** → user account information
+
+- **/etc/shadow** → encrypted passwords
+
+- **/etc/group** → group information
+
+- **/etc/gshadow** → secure group info
+
+- **/etc/login.defs** → default user account settings
+
+- **/etc/skel/** → default files copied to new user home directory
+
+Useful commands:
+
+```bash
+cat /etc/passwd
+cat /etc/group
+sudo cat /etc/shadow
+```
+
+Also explain /etc/passwd fields:
+```
+username:x:UID:GID:comment:home-directory:login-shell
+```
+---
+
+### Basic User Management
+Cover user creation, deletion, checking details.
+Commands:
+```
+useradd
+adduser
+passwd
+id
+finger
+who
+w
+```
+Examples:
+```
+sudo useradd devopsuser
+sudo passwd devopsuser
+id devopsuser
+```
+Create user with home directory:
+```
+sudo useradd -m devopsuser
+```
+Create user with custom shell:
+```
+sudo useradd -m -s /bin/bash devopsuser
+```
+Delete user:
+```
+sudo userdel devopsuser
+```
+Delete user with home directory:
+```
+sudo userdel -r devopsuser
+```
+Also explain difference:
+
+- **useradd** → low-level command
+
+- **adduser** → more friendly interactive command (mostly Debian/Ubuntu)
+- 
+---
+
+### Basic Group Management
+
+Commands:
+```
+groupadd
+groupdel
+groupmod
+groups
+id
+getent group
+```
+
+Examples:
+```
+sudo groupadd devops
+getent group devops
+sudo groupdel devops
+```
+
+Explain:
+- creating groups
+
+- deleting groups
+
+- checking group membership
+
+---
+
+### Password Management
+
+Cover:
+
+- setting password
+
+- changing password
+
+- locking/unlocking password
+
+- forcing password change
+
+Commands:
+```
+passwd
+chpasswd
+passwd -l
+passwd -u
+passwd -e
+```
+
+Examples:
+```
+sudo passwd devopsuser
+sudo passwd -l devopsuser
+sudo passwd -u devopsuser
+sudo passwd -e devopsuser
+```
+
+Explain:
+
+* -l locks account password
+
+* -u unlocks password
+
+* -e expires password immediately
+
+---
